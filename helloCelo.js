@@ -35,12 +35,21 @@ async function readAccount(){
 //
 
 // 6. Import the getAccount function
+const getAccount = require('./getAccount').getAccount
 
 async function createAccount(){
-    // 7. Get your account    
-    // 8. Get the token contract wrappers  
+    // 7. Get your account
+    let account = await getAccount()    
+    // 8. Get the token contract wrappers
+    let goldtoken = await kit.contracts.getGoldToken()
+    let stabletoken = await kit.contracts.getStableToken()  
     // 9. Get your token balances
+    let celoBalance = await goldtoken.balanceOf(account.address)
+    let cUSDBalance = await stabletoken.balanceOf(account.address)
     // Print your account info
+    console.log(`Your account address: ${account.address}`)
+    console.log(`Your account CELO balance: ${celoBalance.toString()}`)
+    console.log(`Your account cUSD balance: ${cUSDBalance.toString()}`)
 }
 
 //
