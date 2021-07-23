@@ -64,7 +64,7 @@ async function send(){
     // 12. Specify recipient Address
     let anAddress = '0xD86518b29BB52a5DAC5991eACf09481CE4B0710d'
     // 13. Specify an amount to send
-    let amount = 0.0000000000001
+    let amount = 100000
     // 14. Get the token contract wrappers
     let goldtoken = await kit.contracts.getGoldToken()
     let stabletoken = await kit.contracts.getStableToken()       
