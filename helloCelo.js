@@ -58,15 +58,31 @@ async function createAccount(){
 
 async function send(){
     // 10. Get your account
+    let account = await getAccount()
     // 11. Add your account to ContractKit to sign transactions
+    kit.connection.addAccount(account.privateKey)
     // 12. Specify recipient Address
+    let anAddress = '0xD86518b29BB52a5DAC5991eACf09481CE4B0710d'
     // 13. Specify an amount to send
-    // 14. Get the token contract wrappers       
+    let amount = 100000
+    // 14. Get the token contract wrappers
+    let goldtoken = await kit.contracts.getGoldToken()
+    let stabletoken = await kit.contracts.getStableToken()       
     // 15. Transfer CELO and cUSD from your account to anAddress
+    let celotx = await goldtoken.transfer(anAddress, amount).send({from: account.address})
+    let cUSDtx = await stabletoken.transfer(anAddress, amount).send({from: account.address, feeCurrency: stabletoken.address})
     // 16. Wait for the transactions to be processed
+    let celoReceipt = await celotx.waitReceipt()
+    let cUSDReceipt = await cUSDtx.waitReceipt()
     // 17. Print receipts
+    console.log('CELO Transaction receipt: %o', celoReceipt)
+    console.log('cUSD Transaction receipt: %o', cUSDReceipt)
     // 18. Get your new balances
+    let celoBalance = await goldtoken.balanceOf(account.address)
+    let cUSDBalance = await stabletoken.balanceOf(account.address)
     // 19. Print new balances
+    console.log(`Your new account CELO balance: ${celoBalance.toString()}`)
+    console.log(`Your new account cUSD balance: ${cUSDBalance.toString()}`)
 }
 
 readAccount()
